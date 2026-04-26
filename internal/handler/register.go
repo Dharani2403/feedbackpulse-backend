@@ -94,7 +94,7 @@ func buildSnippet(siteID string) string {
 	return fmt.Sprintf(`<script>
   window.FeedbackPulse = {
     siteId:     "%s",
-    backendUrl: "https://feedbackpulse-backend.onrender.com",
+    backendUrl: "https://feedbackpulse-backend-48ty.onrender.com",
     userEmail:  "",        // optional: set to logged-in user's email
     position:   "bottom-right",
   };
