@@ -28,7 +28,7 @@ func NewClient(baseURL, secret string) *Client {
 		baseURL: baseURL,
 		secret:  secret,
 		httpClient: &http.Client{
-			Timeout: 30 * time.Second,
+			Timeout: 90 * time.Second,
 		},
 	}
 }
