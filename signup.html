@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FeedbackPulse — Get Started</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+    :root {
+      --bg: #0c0c14;
+      --surface: #13131f;
+      --border: rgba(255,255,255,0.07);
+      --accent: #e94560;
+      --accent-dim: rgba(233,69,96,0.15);
+      --text: #e8e8f0;
+      --muted: #5a5a72;
+      --success: #4ade80;
+      --success-dim: rgba(74,222,128,0.1);
+      --error: #f87171;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 40px 20px;
+    }
+
+    /* Subtle grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(233,69,96,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(233,69,96,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 520px;
+      position: relative;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .logo-icon {
+      width: 40px; height: 40px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(233,69,96,0.4);
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+    }
+    .logo-text {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    h1 {
+      font-size: 30px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #fff 0%, #888 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* Card */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+    }
+
+    /* Steps indicator */
+    .steps {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 32px;
+    }
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+    }
+    .step-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      flex-shrink: 0;
+      transition: all 0.3s;
+    }
+    .step-num.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+    .step-num.done   { border-color: var(--success); color: var(--success); background: var(--success-dim); }
+    .step-label { font-size: 12px; color: var(--muted); white-space: nowrap; }
+    .step-line  { flex: 1; height: 1px; background: var(--border); margin: 0 8px; }
+
+    /* Form */
+    .form-section { display: none; }
+    .form-section.active { display: block; }
+
+    .field { margin-bottom: 20px; }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+    label span { color: var(--accent); }
+
+    input[type="text"], textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input[type="text"]:focus, textarea:focus { border-color: rgba(233,69,96,0.5); }
+    input::placeholder, textarea::placeholder { color: var(--muted); }
+    textarea { resize: vertical; min-height: 120px; font-family: 'DM Mono', monospace; font-size: 12px; }
+
+    /* File upload */
+    .file-zone {
+      border: 1.5px dashed var(--border);
+      border-radius: 10px;
+      padding: 28px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+    .file-zone:hover { border-color: rgba(233,69,96,0.4); background: var(--accent-dim); }
+    .file-zone.has-file { border-color: var(--success); background: var(--success-dim); }
+    .file-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .file-zone-icon { font-size: 28px; margin-bottom: 8px; }
+    .file-zone-label { font-size: 13px; color: var(--muted); }
+    .file-zone-label strong { color: var(--text); }
+    .file-name { font-size: 12px; color: var(--success); margin-top: 6px; font-family: 'DM Mono', monospace; }
+
+    /* Helper text */
+    .helper {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+    .helper a { color: var(--accent); text-decoration: none; }
+    .helper a:hover { text-decoration: underline; }
+
+    /* Buttons */
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.01em;
+      transition: opacity 0.15s, transform 0.1s;
+      margin-top: 8px;
+    }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+      margin-top: 8px;
+    }
+    .btn-secondary:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+
+    /* Error / success banners */
+    .banner {
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: none;
+      line-height: 1.5;
+    }
+    .banner.error   { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3); color: var(--error); }
+    .banner.success { background: var(--success-dim); border: 1px solid rgba(74,222,128,0.3); color: var(--success); }
+
+    /* Result section */
+    .result-box {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .result-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .result-value {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      color: var(--accent);
+      word-break: break-all;
+    }
+    .snippet-box {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .snippet-box pre {
+      font-family: 'DM Mono', monospace;
+      font-size: 11.5px;
+      color: #a8b4c8;
+      white-space: pre-wrap;
+      word-break: break-all;
+      line-height: 1.7;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(233,69,96,0.3);
+      color: var(--accent);
+      font-size: 11px;
+      font-family: 'DM Sans', sans-serif;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .copy-btn:hover { background: rgba(233,69,96,0.25); }
+
+    .success-icon {
+      text-align: center;
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    .success-title {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .success-sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    /* Divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">
+      <div class="logo-icon">💬</div>
+      <span class="logo-text">FeedbackPulse</span>
+    </div>
+    <h1>Start collecting feedback</h1>
+    <p class="subtitle">Set up in 3 steps. No dashboard needed — feedback goes straight to your Google Sheet.</p>
+  </div>
+
+  <div class="card">
+    <!-- Steps indicator -->
+    <div class="steps">
+      <div class="step-item">
+        <div class="step-num active" id="sn1">1</div>
+        <span class="step-label">Your info</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step-item">
+        <div class="step-num" id="sn2">2</div>
+        <span class="step-label">Google Sheet</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step-item">
+        <div class="step-num" id="sn3">3</div>
+        <span class="step-label">Get snippet</span>
+      </div>
+    </div>
+
+    <div id="banner" class="banner"></div>
+
+    <!-- Step 1: Business info -->
+    <div class="form-section active" id="section-1">
+      <div class="field">
+        <label>Business name <span>*</span></label>
+        <input type="text" id="inp-name" placeholder="e.g. Acme Bakery" autocomplete="off"/>
+      </div>
+      <div class="field">
+        <label>Your website (optional)</label>
+        <input type="text" id="inp-host" placeholder="e.g. acmebakery.com"/>
+        <div class="helper">Used to restrict the widget to your domain only.</div>
+      </div>
+      <button class="btn-primary" onclick="goToStep2()">Continue →</button>
+    </div>
+
+    <!-- Step 2: Google credentials -->
+    <div class="form-section" id="section-2">
+      <div class="field">
+        <label>Google Sheet ID <span>*</span></label>
+        <input type="text" id="inp-sheet" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms"/>
+        <div class="helper">
+          Found in your Sheet URL: <code style="color:#e94560">docs.google.com/spreadsheets/d/<strong>SHEET_ID</strong>/edit</code>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Google Service Account JSON <span>*</span></label>
+        <div class="file-zone" id="file-zone">
+          <input type="file" id="inp-json" accept=".json,application/json" onchange="handleFileUpload(this)"/>
+          <div class="file-zone-icon">📄</div>
+          <div class="file-zone-label"><strong>Click to upload</strong> your service account JSON key</div>
+          <div class="file-name" id="file-name"></div>
+        </div>
+        <div class="helper">
+          Don't have one? <a href="https://console.cloud.google.com/iam-admin/serviceaccounts" target="_blank">Create a service account</a> → Keys tab → Add Key → JSON.<br/>
+          Then share your Google Sheet with the <code>client_email</code> in the JSON as <strong>Editor</strong>.
+        </div>
+      </div>
+
+      <div class="divider">or paste JSON directly</div>
+
+      <div class="field">
+        <textarea id="inp-json-text" placeholder='{"type":"service_account","project_id":"...","private_key":"...","client_email":"...",...}'></textarea>
+      </div>
+
+      <button class="btn-primary" id="submit-btn" onclick="submitRegistration()">Register & get my snippet →</button>
+      <button class="btn-secondary" onclick="goToStep1()">← Back</button>
+    </div>
+
+    <!-- Step 3: Success -->
+    <div class="form-section" id="section-3">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">You're all set!</div>
+      <div class="success-sub">Your site ID is ready. Paste the snippet into your website and feedback will appear in your Google Sheet.</div>
+
+      <div class="result-box">
+        <div class="result-label">Your Site ID</div>
+        <div class="result-value" id="result-site-id"></div>
+      </div>
+
+      <div class="snippet-box">
+        <button class="copy-btn" onclick="copySnippet()">Copy</button>
+        <pre id="result-snippet"></pre>
+      </div>
+
+      <div class="helper" style="text-align:center; margin-top: 8px;">
+        Paste this snippet into your website's <code>&lt;head&gt;</code> or just before <code>&lt;/body&gt;</code>.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const BACKEND_URL = "http://localhost:8080"; // ← change to Render URL after deploy
+
+  let state = {
+    name: "",
+    host: "",
+    sheetId: "",
+    credsJSON: "",
+  };
+
+  // ── Navigation ────────────────────────────────────────────────────────────
+
+  function goToStep1() {
+    showSection(1);
+    setStepActive(1);
+  }
+
+  function goToStep2() {
+    const name = document.getElementById("inp-name").value.trim();
+    if (!name) { showBanner("Please enter your business name.", "error"); return; }
+    state.name = name;
+    state.host = document.getElementById("inp-host").value.trim();
+    hideBanner();
+    showSection(2);
+    setStepActive(2);
+  }
+
+  function showSection(n) {
+    document.querySelectorAll(".form-section").forEach(s => s.classList.remove("active"));
+    document.getElementById("section-" + n).classList.add("active");
+  }
+
+  function setStepActive(n) {
+    for (let i = 1; i <= 3; i++) {
+      const el = document.getElementById("sn" + i);
+      el.classList.remove("active", "done");
+      if (i < n) el.classList.add("done"), el.textContent = "✓";
+      else if (i === n) el.classList.add("active"), el.textContent = i;
+      else el.textContent = i;
+    }
+  }
+
+  // ── File upload ───────────────────────────────────────────────────────────
+
+  function handleFileUpload(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById("inp-json-text").value = e.target.result;
+      document.getElementById("file-name").textContent = file.name;
+      document.getElementById("file-zone").classList.add("has-file");
+    };
+    reader.readAsText(file);
+  }
+
+  // ── Submit ────────────────────────────────────────────────────────────────
+
+  async function submitRegistration() {
+    const sheetId   = document.getElementById("inp-sheet").value.trim();
+    const credsText = document.getElementById("inp-json-text").value.trim();
+
+    if (!sheetId)   { showBanner("Please enter your Google Sheet ID.", "error"); return; }
+    if (!credsText) { showBanner("Please upload or paste your service account JSON.", "error"); return; }
+
+    // Validate JSON format
+    try { JSON.parse(credsText); }
+    catch { showBanner("The credentials JSON is not valid JSON. Please check the file.", "error"); return; }
+
+    hideBanner();
+    const btn = document.getElementById("submit-btn");
+    btn.disabled = true;
+    btn.textContent = "Verifying & registering...";
+
+    try {
+      const res = await fetch(`${BACKEND_URL}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name:             state.name,
+          sheet_id:         sheetId,
+          allowed_host:     state.host,
+          credentials_json: credsText,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        showBanner(data.error || "Registration failed. Please try again.", "error");
+        btn.disabled = false;
+        btn.textContent = "Register & get my snippet →";
+        return;
+      }
+
+      // Success
+      document.getElementById("result-site-id").textContent = data.site_id;
+      document.getElementById("result-snippet").textContent = data.snippet;
+      showSection(3);
+      setStepActive(3);
+
+    } catch (err) {
+      showBanner("Could not reach the server. Make sure the backend is running.", "error");
+      btn.disabled = false;
+      btn.textContent = "Register & get my snippet →";
+    }
+  }
+
+  // ── Helpers ───────────────────────────────────────────────────────────────
+
+  function showBanner(msg, type) {
+    const el = document.getElementById("banner");
+    el.textContent = msg;
+    el.className = "banner " + type;
+    el.style.display = "block";
+  }
+
+  function hideBanner() {
+    document.getElementById("banner").style.display = "none";
+  }
+
+  function copySnippet() {
+    const text = document.getElementById("result-snippet").textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector(".copy-btn");
+      btn.textContent = "Copied!";
+      setTimeout(() => btn.textContent = "Copy", 2000);
+    });
+  }
+</script>
+</body>
+</html>

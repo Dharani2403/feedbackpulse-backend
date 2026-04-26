@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: feedbackpulse-backend
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    disk:
+      name: sqlite-data
+      mountPath: /app/data
+      sizeGB: 1
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: DB_PATH
+        value: /app/data/feedbackpulse.db
+      - key: ADMIN_KEY
+        generateValue: true
+      - key: ENCRYPT_SECRET
+        generateValue: true
+      - key: WHISPER_URL
+        value: https://whisper-microservice.onrender.com
+      - key: WHISPER_SECRET
+        sync: false

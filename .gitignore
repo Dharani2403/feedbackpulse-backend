@@ -1,0 +1,34 @@
+# Binary
+feedbackpulse
+feedbackpulse.exe
+
+# SQLite database
+data/
+*.db
+*.db-shm
+*.db-wal
+
+# Environment & secrets
+.env
+*.env
+.env.*
+*-writer.json
+service-account.json
+credentials.json
+*credentials*.json
+
+# Go
+vendor/
+*.test
+*.out
+coverage.txt
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
