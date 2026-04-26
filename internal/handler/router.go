@@ -27,9 +27,13 @@ func NewRouter(d Deps) http.Handler {
 	r.Use(middleware.RequestID)
 
 	r.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"*"},
-		AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
-		AllowedHeaders:   []string{"Content-Type", "X-Site-ID"},
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: []string{"GET", "POST", "OPTIONS"},
+		AllowedHeaders: []string{
+			"Content-Type",
+			"X-Site-ID",
+			"X-Api-Secret", // required: widget sends this header with audio uploads
+		},
 		AllowCredentials: false,
 		MaxAge:           300,
 	}))
