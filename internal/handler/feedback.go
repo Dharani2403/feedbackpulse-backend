@@ -69,8 +69,12 @@ func handleFeedback(d Deps) http.HandlerFunc {
 		email := strings.TrimSpace(r.FormValue("email"))
 
 		// --- Optional: audio ---
+		// Field name must be "file" — matches both the widget's FormData.append("file", ...)
+		// and the FastAPI whisper microservice which also expects a "file" field.
+		// Previously this was r.FormFile("audio") which silently found nothing,
+		// causing transcript_len=0 on every submission even when audio was recorded.
 		var transcript string
-		audioFile, audioHeader, audioErr := r.FormFile("audio")
+		audioFile, audioHeader, audioErr := r.FormFile("file")
 		if audioErr == nil {
 			defer audioFile.Close()
 			if audioHeader.Size > maxAudioSize {
